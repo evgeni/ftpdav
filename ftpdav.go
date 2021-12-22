@@ -1,13 +1,13 @@
 package main
 
 import (
-  "encoding/json"
-  "flag"
-  "log"
-  "os"
+	"encoding/json"
+	"flag"
+	"log"
+	"os"
 
+	"github.com/evgeni/ftpdav/driver/webdav"
 	"goftp.io/server/v2"
-  "github.com/evgeni/ftpdav/driver/webdav"
 )
 
 var (
@@ -15,26 +15,26 @@ var (
 )
 
 type Configuration struct {
-  URL string
-  User string
-  Password string
+	URL      string
+	User     string
+	Password string
 }
 
 func main() {
-  flag.StringVar(&cfgPath, "config", "config.json", "config file path")
+	flag.StringVar(&cfgPath, "config", "config.json", "config file path")
 	flag.Parse()
 
-  file, _ := os.Open(cfgPath)
-  defer file.Close()
+	file, _ := os.Open(cfgPath)
+	defer file.Close()
 
-  decoder := json.NewDecoder(file)
-  configuration := Configuration{}
-  err := decoder.Decode(&configuration)
-  if err != nil {
-    log.Fatal(err)
-  }
+	decoder := json.NewDecoder(file)
+	configuration := Configuration{}
+	err := decoder.Decode(&configuration)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  driver, err := webdav.NewDriver(configuration.URL, configuration.User, configuration.Password, true)
+	driver, err := webdav.NewDriver(configuration.URL, configuration.User, configuration.Password, true)
 	if err != nil {
 		log.Fatal(err)
 	}

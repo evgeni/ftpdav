@@ -1,23 +1,23 @@
 package webdav
 
 import (
-  "io"
-  "os"
-  "strings"
+	"io"
+	"os"
+	"strings"
 
 	"github.com/studio-b12/gowebdav"
-  "goftp.io/server/v2"
+	"goftp.io/server/v2"
 )
 
 type Driver struct {
-  client *gowebdav.Client
+	client *gowebdav.Client
 }
 
 func NewDriver(url string, user string, password string, useSSL bool) (server.Driver, error) {
-  c := gowebdav.NewClient(url, user, password)
-  return &Driver{
-    client: c,
-  }, nil
+	c := gowebdav.NewClient(url, user, password)
+	return &Driver{
+		client: c,
+	}, nil
 }
 
 func buildWebDAVPath(p string) string {
@@ -25,7 +25,7 @@ func buildWebDAVPath(p string) string {
 }
 
 func (driver *Driver) DeleteDir(ctx *server.Context, path string) error {
-  p := buildWebDAVPath(path)
+	p := buildWebDAVPath(path)
 	return driver.client.Remove(p)
 }
 
@@ -34,9 +34,9 @@ func (driver *Driver) DeleteFile(ctx *server.Context, path string) error {
 }
 
 func (driver *Driver) GetFile(ctx *server.Context, path string, offset int64) (int64, io.ReadCloser, error) {
-  p := buildWebDAVPath(path)
-  object, err := driver.client.ReadStream(p)
-  if err != nil {
+	p := buildWebDAVPath(path)
+	object, err := driver.client.ReadStream(p)
+	if err != nil {
 		return 0, nil, err
 	}
 	defer func() {
@@ -53,40 +53,40 @@ func (driver *Driver) GetFile(ctx *server.Context, path string, offset int64) (i
 }
 
 func (driver *Driver) ListDir(ctx *server.Context, path string, callback func(os.FileInfo) error) error {
-  p := buildWebDAVPath(path)
-  if p == "/" {
+	p := buildWebDAVPath(path)
+	if p == "/" {
 		p = ""
 	}
-  objects, err := driver.client.ReadDir(p)
-  if err != nil {
+	objects, err := driver.client.ReadDir(p)
+	if err != nil {
 		return err
 	}
-  for _, object := range objects {
-    err := callback(object)
+	for _, object := range objects {
+		err := callback(object)
 		if err != nil {
-		  return err
+			return err
 		}
-  }
-  return nil
+	}
+	return nil
 }
 
 func (driver *Driver) MakeDir(ctx *server.Context, path string) error {
-  return driver.client.Mkdir(path, os.ModePerm)
+	return driver.client.Mkdir(path, os.ModePerm)
 }
 
 func (driver *Driver) PutFile(ctx *server.Context, destPath string, data io.Reader, offset int64) (int64, error) {
-  p := buildWebDAVPath(destPath)
-  err := driver.client.WriteStream(p, data, 0644)
-  return 0, err
+	p := buildWebDAVPath(destPath)
+	err := driver.client.WriteStream(p, data, 0644)
+	return 0, err
 }
 
 func (driver *Driver) Rename(ctx *server.Context, fromPath string, toPath string) error {
-  fp := buildWebDAVPath(fromPath)
-  tp := buildWebDAVPath(toPath)
-  return driver.client.Rename(fp, tp, false)
+	fp := buildWebDAVPath(fromPath)
+	tp := buildWebDAVPath(toPath)
+	return driver.client.Rename(fp, tp, false)
 }
 
 func (driver *Driver) Stat(ctx *server.Context, path string) (os.FileInfo, error) {
-  p := buildWebDAVPath(path)
-  return driver.client.Stat(p)
+	p := buildWebDAVPath(path)
+	return driver.client.Stat(p)
 }
