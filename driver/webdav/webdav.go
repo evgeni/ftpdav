@@ -35,7 +35,18 @@ func (driver *Driver) DeleteFile(ctx *server.Context, path string) error {
 
 func (driver *Driver) GetFile(ctx *server.Context, path string, offset int64) (int64, io.ReadCloser, error) {
 	p := buildWebDAVPath(path)
-	object, err := driver.client.ReadStream(p)
+	info, err := driver.client.Stat(p)
+	if err != nil {
+		return 0, nil, err
+	}
+
+	var object io.ReadCloser
+	length := info.Size() - offset
+	if offset == 0 {
+		object, err = driver.client.ReadStream(p)
+	} else {
+		object, err = driver.client.ReadStreamRange(p, offset, length)
+	}
 	if err != nil {
 		return 0, nil, err
 	}
@@ -44,12 +55,8 @@ func (driver *Driver) GetFile(ctx *server.Context, path string, offset int64) (i
 			object.Close()
 		}
 	}()
-	info, err := driver.client.Stat(p)
-	if err != nil {
-		return 0, nil, err
-	}
 
-	return info.Size() - offset, object, nil
+	return length, object, nil
 }
 
 func (driver *Driver) ListDir(ctx *server.Context, path string, callback func(os.FileInfo) error) error {
