@@ -6,3 +6,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+  # Maintain Go deps
+  - package-ecosystem: gomod
+    directory: "/"
+    schedule:
+      interval: "daily"
