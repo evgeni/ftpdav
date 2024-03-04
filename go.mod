@@ -7,7 +7,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/studio-b12/gowebdav v0.9.0
 	goftp.io/server/v2 v2.0.1
-	golang.org/x/net v0.21.0
+	golang.org/x/net v0.22.0
 )
 
 require (
