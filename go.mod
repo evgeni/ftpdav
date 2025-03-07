@@ -1,6 +1,6 @@
 module github.com/evgeni/ftpdav
 
-go 1.17
+go 1.23.0
 
 require (
 	github.com/jlaffaye/ftp v0.2.0
