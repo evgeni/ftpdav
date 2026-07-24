@@ -1,13 +1,13 @@
 module github.com/evgeni/ftpdav
 
-go 1.23.0
+go 1.25.0
 
 require (
 	github.com/jlaffaye/ftp v0.2.0
 	github.com/stretchr/testify v1.10.0
 	github.com/studio-b12/gowebdav v0.10.0
 	goftp.io/server/v2 v2.0.1
-	golang.org/x/net v0.37.0
+	golang.org/x/net v0.57.0
 )
 
 require (
