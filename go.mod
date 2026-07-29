@@ -3,7 +3,7 @@ module github.com/evgeni/ftpdav
 go 1.23.0
 
 require (
-	github.com/jlaffaye/ftp v0.2.0
+	github.com/jlaffaye/ftp v0.2.2
 	github.com/stretchr/testify v1.11.1
 	github.com/studio-b12/gowebdav v0.13.0
 	goftp.io/server/v2 v2.0.3
@@ -12,8 +12,6 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/hashicorp/errwrap v1.0.0 // indirect
-	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
